@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('date');
             $table->string('image');
             $table->string('body');
-            $table->bigint('id_category');
+            $table->unsignedBigInteger('id_category');
             $table->foreign('id_category')->references('id')->on('categories');
             $table->timestamps();
         });
