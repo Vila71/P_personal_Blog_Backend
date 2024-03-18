@@ -9,16 +9,10 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'title',
-        'body',
-        'date',
-        'id_category',
-        'image'
-    ];
+    protected $guarded = [];
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'id_category');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }

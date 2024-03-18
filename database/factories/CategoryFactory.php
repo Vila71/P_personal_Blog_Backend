@@ -17,7 +17,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'category_id'=> \App\Models\Category::pluck('id')->random(),
+            'category' => $this->faker->word(),
         ];
     }
 }
