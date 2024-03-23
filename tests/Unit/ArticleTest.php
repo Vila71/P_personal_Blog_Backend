@@ -53,30 +53,30 @@ class ArticleTest extends TestCase
         $response->assertStatus(201)->assertJsonStructure(['article']);
     }
 
-    public function test_can_update_article()
+    public function testUpdate()
     {
-        // Crear un artículo de prueba en la base de datos utilizando la factoría ArticleFactory
-        $article = ArticleFactory::new()->create();
-
-        // Generar datos actualizados utilizando Faker
-        $updatedData = [
-            'title' => 'Updated Title',
-            'body' => 'Updated body content',
-            'date' => now()->format('Y-m-d'),
-            'id_category' => 1, // Asumiendo que la categoría existe con el id 1
-            'image' => 'updated_image.jpg'
+        // Crear una instancia de Article usando la factoría
+        $article = Article::factory()->create();
+    
+        // Comprobar que el artículo se ha creado correctamente
+        $this->assertDatabaseHas('articles', ['id' => $article->id]);
+    
+        // Datos nuevos para actualizar el artículo
+        $newData = [
+            'title' => $this->faker->sentence,
+            'body' => $this->faker->text(250),
+            'date' => now(),
+            'id_category' => Category::factory()->create()->id, // Crear una nueva categoría
+            'image' => $this->faker->url(),
         ];
-
-        // Realizar una solicitud HTTP para actualizar el artículo existente
-        $response = $this->put(action('ArticleController@update', ['id' => $article->id]), $updatedData);
-
-        // Verificar que la actualización se realizó correctamente y que la respuesta tiene el estado 200
-        $response->assertStatus(200);
-
-        // Verificar que los datos actualizados estén presentes en la base de datos utilizando assertDatabaseHas
-        $this->assertDatabaseHas('articles', $updatedData);
+    
+        // Hacer la petición PUT a la ruta de actualización
+        $response = $this->put('/api/articles/' . $article->id, $newData);
+    
+        // Asegurarse de que la respuesta tiene estado 200 y contiene los nuevos datos
+        $response->assertStatus(200)
+            ->assertJsonFragment($newData);
     }
-
     public function testDestroy()
     {
         $article = Article::factory()->create();

@@ -19,7 +19,7 @@ class ArticleFactory extends Factory
             'body' => $this->faker->text(250),
             'date' => now(),
             'category_id' => Category::factory(), // Relación con CategoryFactory
-            'image' => $this->faker->url(),
+            'image' => 'https://picsum.photos/200/300',
         ];
     }
 }
